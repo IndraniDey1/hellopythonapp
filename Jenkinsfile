@@ -1,23 +1,10 @@
-apiVersion: v1
-kind: Template
-labels:
-  application: hellopythonapp
+kind: "BuildConfig"
+apiVersion: "v1"
 metadata:
-  name: hellopythonapp
-objects:
-  -
-    apiVersion: v1
-    kind: BuildConfig
-    metadata:
-      labels:
-        build: hellopythonapp
-      name: hellopythonapp
-    spec:
-      runPolicy: Serial
-      source: {}
-      strategy:
-        jenkinsPipelineStrategy:
-          jenkinsfile: |-
+  name: "hellopythonapp"
+spec:
+  strategy:
+    jenkinsPipelineStrategy:
             pipeline {
               node {
                 stage('build & deploy') {
