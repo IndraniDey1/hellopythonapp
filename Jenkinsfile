@@ -41,6 +41,7 @@ spec:
                     destTag: 'prod'
                   openshiftVerifyDeployment depCfg: 'hellopythonapp',
                     namespace: 'production'
-                }   
+                } 
+              }
          }
          type: JenkinsPipeline
