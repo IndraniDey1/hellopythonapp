@@ -1,12 +1,31 @@
-kind: "BuildConfig"
-apiVersion: "v1"
+apiVersion: v1
+kind: Template
+labels:
+  application: hellopythonapp
 metadata:
-  name: "hellopythonapp"
-spec:
-  strategy:
-    jenkinsPipelineStrategy:
+  name: hellopythonapp
+objects:
+  -
+    apiVersion: v1
+    kind: BuildConfig
+    metadata:
+      labels:
+        build: hellopythonapp
+      name: hellopythonapp
+    spec:
+      runPolicy: Serial
+      source: {}
+      strategy:
+        jenkinsPipelineStrategy:
+          jenkinsfile: |-
             pipeline {
-              node {
+               agent {
+                node {
+                 // spin up a node.js slave pod to run this build on
+                 label 'nodejs'
+                }
+               }
+              stages {
                 stage('build & deploy') {
                   openshiftBuild bldCfg: 'hellopythonapp',
                     namespace: 'development',
@@ -41,7 +60,7 @@ spec:
                     destTag: 'prod'
                   openshiftVerifyDeployment depCfg: 'hellopythonapp',
                     namespace: 'production'
-                } 
-              }
-         }
-         type: JenkinsPipeline
+                }
+              }   
+            }
+           type: JenkinsPipeline
